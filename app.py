@@ -35,14 +35,14 @@ location_name = st.text_input("Nome da Localização", placeholder="Ex: Centro d
 col1, col2 = st.columns(2)
 
 with col1:
-    O3 = st.number_input("Ozônio (O3)", min_value=0.0, value=50.0)
-    CO = st.number_input("Monóxido de Carbono (CO)", min_value=0.0, value=0.9)
-    NO2 = st.number_input("Dióxido de Nitrogênio (NO2)", min_value=0.0, value=40.0)
+    O3 = st.number_input("Ozônio (O3 [AQI])", min_value=0.0, value=28.0)
+    CO = st.number_input("Monóxido de Carbono (CO [AQI])", min_value=0.0, value=1.0)
+    NO2 = st.number_input("Dióxido de Nitrogênio (NO2 [AQI])", min_value=0.0, value=1.0)
 
 with col2:
-    PM10 = st.number_input("Partículas Inaláveis (PM10)", min_value=0.0, value=72.0)
-    PM25 = st.number_input("Partículas Finas (PM2.5)", min_value=0.0, value=32.0)
-    SO2 = st.number_input("Dióxido de Enxofre (SO2)", min_value=0.0, value=4.0)
+    PM10 = st.number_input("Partículas Inaláveis (PM10 [AQI])", min_value=0.0, value=5.0)
+    PM25 = st.number_input("Partículas Finas (PM2.5 [AQI])", min_value=0.0, value=15.0)
+    SO2 = st.number_input("Dióxido de Enxofre (SO2 [AQI])", min_value=0.0, value=1.0)
 
 if st.button("🚨 Verificar Nível de Poluição"):
     try:
