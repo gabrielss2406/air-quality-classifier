@@ -1,8 +1,10 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import os
 
-model = joblib.load("model.pkl")
+model_path = os.getenv("MODEL_PATH", "model.pkl")
+model = joblib.load(model_path)
 
 st.set_page_config(page_title="Monitor da Poluição", page_icon="🌬️")
 
@@ -24,7 +26,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.image("https://images.unsplash.com/photo-1599301449088-339257626bbe?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", use_column_width=True)
 st.title("🏭 Monitor da Qualidade do Ar")
 
 st.markdown("### Insira os Índices de Qualidade do Ar (AQI):")
