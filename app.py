@@ -30,7 +30,7 @@ st.title("🏭 Monitor da Qualidade do Ar")
 
 st.markdown("### Insira os Índices de Qualidade do Ar (AQI):")
 
-location_name = st.text_input("Nome da Localização", "Ex: Centro da Cidade")
+location_name = st.text_input("Nome da Localização", placeholder="Ex: Centro da Cidade")
 
 col1, col2 = st.columns(2)
 
@@ -46,8 +46,10 @@ with col2:
 
 if st.button("🚨 Verificar Nível de Poluição"):
     try:
-        vec = [[O3, CO, NO2, PM10, PM25, SO2]]
-        result = model.predict(vec)[0]
+        feature_names = ['O3_aqi', 'CO_aqi', 'NO2_aqi', 'PM10_aqi', 'PM2_5_aqi', 'SO2_aqi']
+        data = [[O3, CO, NO2, PM10, PM25, SO2]]
+        df_pred = pd.DataFrame(data, columns=feature_names)
+        result = model.predict(df_pred)[0]
         print(result)
 
         if result == 1:
