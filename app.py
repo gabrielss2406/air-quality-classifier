@@ -48,17 +48,17 @@ if st.button("🚨 Verificar Nível de Poluição"):
     try:
         vec = [[O3, CO, NO2, PM10, PM25, SO2]]
         result = model.predict(vec)[0]
-        
-        if result == "Good":
-            st.success(f"Qualidade do Ar: **Boa** 👍")
-        elif result == "Moderate":
-            st.warning(f"Qualidade do Ar: **Moderada** 🤔")
+        print(result)
+
+        if result == 1:
+            st.error(f"Ambiente poluído 👎")
         else:
-            st.error(f"Qualidade do Ar: **Ruim** 👎")
+            st.success(f"Ambiente não poluído 👍")
         
+        result_label = "poluído" if result == 1 else "não poluído"
         st.session_state.history.append({
             "Localização": location_name,
-            "Resultado": result,
+            "Resultado": result_label,
             "O3": O3, "CO": CO, "NO2": NO2, 
             "PM10": PM10, "PM2.5": PM25, "SO2": SO2
         })
