@@ -70,6 +70,3 @@ def aqi_calc(pm25=None, pm10=None, o3=None, no2=None, so2=None, co=None):
     }
 
     return resultados
-
-
-aqi_calc(co=140, no2=5.33, o3=83.23, pm10=2.23, pm25=2.18, so2=1.0)

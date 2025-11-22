@@ -2,6 +2,11 @@ import streamlit as st
 import joblib
 import pandas as pd
 import os
+import sys
+
+# Adiciona o diretório raiz ao sys.path para encontrar o módulo utils
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from utils.aqi import aqi_calc
 
 # Carrega o modelo
 model_path = os.getenv("MODEL_PATH", "research/model.pkl")
@@ -19,20 +24,11 @@ st.title("🏭 Calcular Nível de Poluição")
 if "history" not in st.session_state:
     st.session_state.history = []
 
-st.markdown("### Insira os Índices de Qualidade do Ar (AQI):")
+st.markdown("### Insira as concentrações de poluentes (em µg/m³):")
 
-with st.expander("ℹ️ O que é o AQI e como ele é calculado?"):
+with st.expander("ℹ️ O que fazemos com esses valores?"):
     st.markdown("""
-    #### 1. O que é o AQI?
-    O **Índice de Qualidade do Ar (AQI)** funciona como um "termômetro" da poluição. Quanto maior o número, maior o risco para a saúde.
-
-    #### 2. Como a conta é feita?
-    O cálculo **não é uma linha reta única**. Ele funciona em **degraus**, usando uma técnica chamada *Interpolação Linear Segmentada*.
-
-    * **O Conceito:** A fórmula muda dependendo da gravidade.
-    * **Na Prática:** Primeiro, identificamos em qual "faixa" a poluição se encontra (ex: faixa boa ou ruim). Depois, aplicamos uma regra de três específica para aquele pedaço.
-    
-    É por isso que o índice sobe mais rápido em algumas faixas (como quando o ar começa a ficar perigoso) do que em outras. O valor final do AQI do dia é sempre determinado pelo **pior poluente** medido no momento.
+    Convertemos esses valores para a medida de Índice de Qualidade do Ar (AQI), uma medida diária da limpeza ou poluição do ar, para classificar o ambiente e possibilitar a análise.
     """)
 
 location_name = st.text_input("Nome da Localização", placeholder="Ex: Centro da Cidade")
@@ -40,22 +36,34 @@ location_name = st.text_input("Nome da Localização", placeholder="Ex: Centro d
 col1, col2 = st.columns(2)
 
 with col1:
-    O3 = st.number_input("Ozônio (O3 [AQI])", min_value=0.0, value=28.0)
-    CO = st.number_input("Monóxido de Carbono (CO [AQI])", min_value=0.0, value=1.0)
-    NO2 = st.number_input("Dióxido de Nitrogênio (NO2 [AQI])", min_value=0.0, value=1.0)
+    O3_ug = st.number_input("Ozônio (O3 [µg/m³])", min_value=0.0, value=55.0)
+    CO_ug = st.number_input(
+        "Monóxido de Carbono (CO [µg/m³])", min_value=0.0, value=115.0
+    )
+    NO2_ug = st.number_input(
+        "Dióxido de Nitrogênio (NO2 [µg/m³])", min_value=0.0, value=1.0
+    )
 
 with col2:
-    PM10 = st.number_input(
-        "Partículas Inaláveis (PM10 [AQI])", min_value=0.0, value=5.0
+    PM10_ug = st.number_input(
+        "Partículas Inaláveis (PM10 [µg/m³])", min_value=0.0, value=5.0
     )
-    PM25 = st.number_input("Partículas Finas (PM2.5 [AQI])", min_value=0.0, value=15.0)
-    SO2 = st.number_input("Dióxido de Enxofre (SO2 [AQI])", min_value=0.0, value=1.0)
+    PM25_ug = st.number_input(
+        "Partículas Finas (PM2.5 [µg/m³])", min_value=0.0, value=4.0
+    )
+    SO2_ug = st.number_input(
+        "Dióxido de Enxofre (SO2 [µg/m³])", min_value=0.0, value=1.0
+    )
 
 if st.button("🚨 Verificar Nível de Poluição"):
     if not location_name:
         st.warning("Por favor, insira um nome para a localização.")
     else:
         try:
+            aqi_results = aqi_calc(
+                pm25=PM25_ug, pm10=PM10_ug, o3=O3_ug, no2=NO2_ug, so2=SO2_ug, co=CO_ug
+            )
+
             feature_names = [
                 "O3_aqi",
                 "CO_aqi",
@@ -64,7 +72,18 @@ if st.button("🚨 Verificar Nível de Poluição"):
                 "PM2_5_aqi",
                 "SO2_aqi",
             ]
-            data = [[O3, CO, NO2, PM10, PM25, SO2]]
+
+            data = [
+                [
+                    aqi_results["O3"],
+                    aqi_results["CO"],
+                    aqi_results["NO2"],
+                    aqi_results["PM10"],
+                    aqi_results["PM2.5"],
+                    aqi_results["SO2"],
+                ]
+            ]
+
             df_pred = pd.DataFrame(data, columns=feature_names)
 
             result = model.predict(df_pred)[0]
@@ -75,28 +94,27 @@ if st.button("🚨 Verificar Nível de Poluição"):
                 st.success("Ambiente não poluído 👍")
 
             result_label = "poluído" if result == 1 else "não poluído"
+
             st.session_state.history.append(
                 {
                     "Localização": location_name,
                     "Resultado": result_label,
-                    "O3": O3,
-                    "CO": CO,
-                    "NO2": NO2,
-                    "PM10": PM10,
-                    "PM2.5": PM25,
-                    "SO2": SO2,
+                    "O3 (µg/m³)": O3_ug,
+                    "CO (µg/m³)": CO_ug,
+                    "NO2 (µg/m³)": NO2_ug,
+                    "PM10 (µg/m³)": PM10_ug,
+                    "PM2.5 (µg/m³)": PM25_ug,
+                    "SO2 (µg/m³)": SO2_ug,
                 }
             )
 
         except Exception as e:
             st.error(f"Erro ao classificar: {e}")
 
-# Exibe o histórico de medições
 if st.session_state.history:
     st.markdown("---")
     st.markdown("### Histórico de Medições")
 
-    # Inverte a ordem do histórico para mostrar o mais recente primeiro
     reversed_history = st.session_state.history[::-1]
 
     df = pd.DataFrame(reversed_history)
