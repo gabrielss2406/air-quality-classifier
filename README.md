@@ -51,10 +51,10 @@ pip install -r requirements.txt
 
 ### 5. Executar a Aplicação Streamlit
 
-Para iniciar a aplicação, **sempre execute o arquivo principal `app.py`**. Isso garante que o estado da sessão (`st.session_state`) seja inicializado corretamente para todas as páginas.
+Para iniciar a aplicação, **sempre execute o arquivo principal `Tela_inicial.py`**. Isso garante que o estado da sessão (`st.session_state`) seja inicializado corretamente para todas as páginas.
 
 ```bash
-streamlit run app.py
+streamlit run Tela_inicial.py
 ```
 
 Após executar o comando, o Streamlit abrirá automaticamente a aplicação em seu navegador padrão. Você poderá navegar entre as diferentes páginas usando o menu lateral.
