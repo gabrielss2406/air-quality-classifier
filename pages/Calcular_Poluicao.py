@@ -4,11 +4,9 @@ import pandas as pd
 import os
 import sys
 
-# Adiciona o diretório raiz ao sys.path para encontrar o módulo utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from utils.aqi import aqi_calc
 
-# Carrega o modelo
 model_path = os.getenv("MODEL_PATH", "research/model.pkl")
 try:
     model = joblib.load(model_path)
@@ -20,7 +18,6 @@ st.set_page_config(page_title="Calcular Poluição", page_icon="🏭")
 
 st.title("🏭 Calcular Nível de Poluição")
 
-# Inicializa o histórico na session_state se não existir
 if "history" not in st.session_state:
     st.session_state.history = []
 
@@ -92,6 +89,15 @@ if st.button("🚨 Verificar Nível de Poluição"):
                 st.error("Ambiente poluído 👎")
             else:
                 st.success("Ambiente não poluído 👍")
+
+            with st.expander("Ver detalhes da medição"):
+                col1, col2, col3 = st.columns(3)
+                col1.metric("O3 AQI", f"{aqi_results['O3']}", f"{O3_ug} µg/m³", delta_color="off")
+                col2.metric("CO AQI", f"{aqi_results['CO']}", f"{CO_ug} µg/m³", delta_color="off")
+                col3.metric("NO2 AQI", f"{aqi_results['NO2']}", f"{NO2_ug} µg/m³", delta_color="off")
+                col1.metric("PM10 AQI", f"{aqi_results['PM10']}", f"{PM10_ug} µg/m³", delta_color="off")
+                col2.metric("PM2.5 AQI", f"{aqi_results['PM2.5']}", f"{PM25_ug} µg/m³", delta_color="off")
+                col3.metric("SO2 AQI", f"{aqi_results['SO2']}", f"{SO2_ug} µg/m³", delta_color="off")
 
             result_label = "poluído" if result == 1 else "não poluído"
 

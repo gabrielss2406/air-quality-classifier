@@ -49,9 +49,22 @@ folium.Marker(
 # Exibe o mapa e captura a interação
 map_data = st_folium(m, width=700, height=500, key="folium_map")
 
+
+def normalize_coordinates(lat, lon):
+    lat = max(-90.0, min(90.0, lat))
+
+    lon = ((lon + 180) % 360) - 180
+
+    return lat, lon
+
+
 # Atualiza as coordenadas com base no clique do mapa
 if map_data and map_data["last_clicked"]:
     lat, lon = map_data["last_clicked"]["lat"], map_data["last_clicked"]["lng"]
+
+    # Normaliza as coordenadas
+    lat, lon = normalize_coordinates(lat, lon)
+
     # Atualiza tanto os inputs quanto o centro do mapa
     if st.session_state.lat_input != lat or st.session_state.lon_input != lon:
         st.session_state.lat_input = lat
@@ -147,6 +160,45 @@ if st.button("🚨 Verificar Qualidade do Ar na Localização"):
                     st.error("Ambiente poluído 👎")
                 else:
                     st.success("Ambiente não poluído 👍")
+
+                with st.expander("Ver detalhes da medição"):
+                    col1, col2, col3 = st.columns(3)
+                    col1.metric(
+                        "O3 AQI",
+                        f"{aqi_results['O3']}",
+                        f"{o3_ug} µg/m³",
+                        delta_color="off",
+                    )
+                    col2.metric(
+                        "CO AQI",
+                        f"{aqi_results['CO']}",
+                        f"{co_ug} µg/m³",
+                        delta_color="off",
+                    )
+                    col3.metric(
+                        "NO2 AQI",
+                        f"{aqi_results['NO2']}",
+                        f"{no2_ug} µg/m³",
+                        delta_color="off",
+                    )
+                    col1.metric(
+                        "PM10 AQI",
+                        f"{aqi_results['PM10']}",
+                        f"{pm10_ug} µg/m³",
+                        delta_color="off",
+                    )
+                    col2.metric(
+                        "PM2.5 AQI",
+                        f"{aqi_results['PM2.5']}",
+                        f"{pm25_ug} µg/m³",
+                        delta_color="off",
+                    )
+                    col3.metric(
+                        "SO2 AQI",
+                        f"{aqi_results['SO2']}",
+                        f"{so2_ug} µg/m³",
+                        delta_color="off",
+                    )
 
                 result_label = "poluído" if result == 1 else "não poluído"
 
