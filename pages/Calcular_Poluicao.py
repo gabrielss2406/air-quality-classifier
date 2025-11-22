@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 # Carrega o modelo
-model_path = os.getenv("MODEL_PATH", "model.pkl")
+model_path = os.getenv("MODEL_PATH", "research/model.pkl")
 try:
     model = joblib.load(model_path)
 except FileNotFoundError:
@@ -15,7 +15,25 @@ st.set_page_config(page_title="Calcular Poluição", page_icon="🏭")
 
 st.title("🏭 Calcular Nível de Poluição")
 
+# Inicializa o histórico na session_state se não existir
+if "history" not in st.session_state:
+    st.session_state.history = []
+
 st.markdown("### Insira os Índices de Qualidade do Ar (AQI):")
+
+with st.expander("ℹ️ O que é o AQI e como ele é calculado?"):
+    st.markdown("""
+    #### 1. O que é o AQI?
+    O **Índice de Qualidade do Ar (AQI)** funciona como um "termômetro" da poluição. Quanto maior o número, maior o risco para a saúde.
+
+    #### 2. Como a conta é feita?
+    O cálculo **não é uma linha reta única**. Ele funciona em **degraus**, usando uma técnica chamada *Interpolação Linear Segmentada*.
+
+    * **O Conceito:** A fórmula muda dependendo da gravidade.
+    * **Na Prática:** Primeiro, identificamos em qual "faixa" a poluição se encontra (ex: faixa boa ou ruim). Depois, aplicamos uma regra de três específica para aquele pedaço.
+    
+    É por isso que o índice sobe mais rápido em algumas faixas (como quando o ar começa a ficar perigoso) do que em outras. O valor final do AQI do dia é sempre determinado pelo **pior poluente** medido no momento.
+    """)
 
 location_name = st.text_input("Nome da Localização", placeholder="Ex: Centro da Cidade")
 
@@ -48,7 +66,7 @@ if st.button("🚨 Verificar Nível de Poluição"):
             ]
             data = [[O3, CO, NO2, PM10, PM25, SO2]]
             df_pred = pd.DataFrame(data, columns=feature_names)
-            
+
             result = model.predict(df_pred)[0]
 
             if result == 1:
@@ -83,4 +101,3 @@ if st.session_state.history:
 
     df = pd.DataFrame(reversed_history)
     st.dataframe(df)
-

@@ -53,7 +53,7 @@ st.markdown(
     """
     - **Calcular Poluição:** Insira manualmente os valores dos poluentes para obter uma classificação instantânea.
     - **Calcular por Localização:** (Em breve) Obtenha a qualidade do ar para uma localização específica.
-    - **Análise Detalhada:** Visualize o histórico de todas as medições realizadas.
+    - **Análise Detalhada:** Visualize insights e como foi o desenvolvimento do modelo desse projeto.
     """
 )
 
