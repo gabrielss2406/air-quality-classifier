@@ -12,4 +12,4 @@ EXPOSE 8501
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
-CMD ["streamlit", "run", "Tela_inicial.py"]
+CMD ["streamlit", "run", "Tela_Inicial.py"]
