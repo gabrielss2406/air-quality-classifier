@@ -4,12 +4,13 @@ Este é um aplicativo Streamlit para monitorar a qualidade do ar, permitindo a e
 
 ## Estrutura do Projeto
 
--   `app.py`: Página principal da aplicação. Contém informações de boas-vindas e inicializa o estado global da sessão.
+-   `Tela_Inicial.py`: Página principal da aplicação. Contém informações de boas-vindas e inicializa o estado global da sessão.
 -   `pages/`: Diretório que contém as diferentes páginas da aplicação.
     -   `Calcular_Poluicao.py`: Página onde o usuário pode inserir os índices de qualidade do ar (AQI) para prever o nível de poluição e visualizar o histórico de medições.
     -   `Calcular_por_Localizacao.py`: Página reservada para futuras implementações, onde será possível calcular a poluição baseada em uma localização específica.
     -   `Análise_Detalhada.py`: Página com conteúdo estático, que pode ser expandida no futuro para exibir análises mais aprofundadas.
--   `model.pkl`: O modelo de machine learning utilizado para classificar a qualidade do ar.
+-   `research/`: Contém a explicação técnica e o embasamento teórico do projeto. Para mais detalhes, consulte o [README da pasta research](research/README.md).
+-   `research/model.pkl`: O modelo de machine learning utilizado para classificar a qualidade do ar.
 -   `requirements.txt`: Lista as dependências Python necessárias para rodar o projeto.
 
 ## Como Rodar o Projeto
