@@ -6,3 +6,4 @@ folium
 streamlit-folium
 matplotlib
 seaborn
+streamlit-local-storage
