@@ -183,31 +183,46 @@ st.info("Mostrando a nossa matriz de correlação:")
 
 st.image("images/matriz_correlacao.png", width=1000)
 
-st.info("Conclusão final:")
+st.subheader("🔍 Principais Insights das Correlações")
 
-st.write(
-    """ - *Forte correlação entre “medida” e “aqi” de cada poluente*: Essa relação é esperada, pois o AQI é um índice derivado diretamente da concentração medida.
-Isso reforça que usar ao mesmo tempo medidas e AQI no modelo introduziria multicolinearidade.
+col1, col2 = st.columns(2)
 
-- *Poluentes apresentam forte correlação entre si*: As concentrações medidas de poluentes apresentam correlação positiva moderada a alta entre si, especialmente ->
-(PM10_medida, PM2_5_medida e NO2_medida)
-(CO_medida e NO2_medida)
-(PM10_aqi, PM2_5_aqi e NO2_aqi)
-Isso sugere que ambientes com alta concentração de um poluente geralmente têm níveis elevados de outros poluentes também.
+with col1:
+    st.markdown("**✅ Correlações Fortes Identificadas**")
+    st.markdown("""
+    - **Forte correlação entre "medida" e "aqi"** de cada poluente: Essa relação é esperada, 
+      pois o AQI é um índice derivado diretamente da concentração medida.
+    
+    - **Poluentes apresentam forte correlação entre si**: As concentrações medidas de poluentes 
+      apresentam correlação positiva moderada a alta entre si, especialmente:
+      - PM10_medida, PM2_5_medida e NO2_medida
+      - CO_medida e NO2_medida
+      - PM10_aqi, PM2_5_aqi e NO2_aqi
+    
+    - Isso sugere que ambientes com alta concentração de um poluente geralmente têm níveis 
+      elevados de outros poluentes também.
+    """)
 
-- *Correlação dos poluentes com a variável-alvo polluted* A variável polluted apresenta maior correlação com:
-    + PM10_medida
-    + PM2_5_medida
-    + NO2_medida
-    + CO_medida
+with col2:
+    st.markdown("**📊 Variáveis Mais Influentes**")
+    st.markdown("""
+    A variável **polluted** apresenta maior correlação com:
+    - **PM10_medida** (Material Particulado)
+    - **PM2_5_medida** (Material Particulado Fino)
+    - **NO2_medida** (Dióxido de Nitrogênio)
+    - **CO_medida** (Monóxido de Carbono)
+    
+    Esses são os poluentes mais influentes na determinação de ambientes poluídos, 
+    segundo a estrutura do dataset.
+    """)
 
-    Esses são os poluentes mais influentes na determinação de ambientes poluídos, segundo a estrutura do dataset.
-    Eles tendem a subir juntos quando o ambiente encontra-se em condição considerada poluída.
+st.info("""
+**💡 Observação Importante**: Variáveis climáticas como temperatura, umidade, pressão e vento 
+possuem correlação fraca ou neutra com 'polluted', indicando que fatores meteorológicos têm 
+impacto bem menor na classificação de ambientes poluídos.
+""")
 
-    Por outro lado, variáveis climáticas como temperatura, umidade, pressão e vento possuem correlação fraca ou neutra com polluted, indicando que fatores meteorológicos têm impacto bem menor no rótulo final.
-
-- *Variáveis climáticas possuem pouca influência*: Temperatura, vento, umidade e ponto de orvalho apresentam correlações baixas com os níveis de poluição. Isso mostra que, no dataset, as condições meteorológicas não são determinantes diretas na classificação do ambiente como poluído ou não."""
-)
+st.header("📝 Conclusões da Análise")
 
 st.success("""
 **Principais descobertas:**
