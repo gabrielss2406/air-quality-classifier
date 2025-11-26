@@ -4,3 +4,6 @@ joblib
 scikit-learn==1.7.2
 folium
 streamlit-folium
+matplotlib
+seaborn
+streamlit-local-storage

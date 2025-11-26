@@ -6,6 +6,7 @@ import os
 import sys
 import folium
 from streamlit_folium import st_folium
+from streamlit_local_storage import LocalStorage
 
 # Adiciona o diretório raiz ao sys.path para encontrar o módulo utils
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -23,9 +24,9 @@ st.set_page_config(page_title="Calcular por Localização", page_icon="📍")
 
 st.title("📍 Calcular por Localização")
 
-# Inicializa o estado da sessão para histórico e coordenadas
-if "history_location" not in st.session_state:
-    st.session_state.history_location = []
+localS = LocalStorage()
+
+# Inicializa o estado da sessão para coordenadas
 if "map_center" not in st.session_state:
     st.session_state.map_center = [-14.235, -51.925]  # Centro do Brasil
 if "map_zoom" not in st.session_state:
@@ -202,7 +203,8 @@ if st.button("🚨 Verificar Qualidade do Ar na Localização"):
 
                 result_label = "poluído" if result == 1 else "não poluído"
 
-                st.session_state.history_location.append(
+                history_location = localS.getItem("history_location") or []
+                history_location.append(
                     {
                         "Latitude": latitude,
                         "Longitude": longitude,
@@ -215,6 +217,7 @@ if st.button("🚨 Verificar Qualidade do Ar na Localização"):
                         "SO2 (µg/m³)": so2_ug,
                     }
                 )
+                localS.setItem("history_location", history_location)
             else:
                 st.warning(
                     "Não foi possível obter dados de qualidade do ar para esta localização."
@@ -225,9 +228,10 @@ if st.button("🚨 Verificar Qualidade do Ar na Localização"):
         except Exception as e:
             st.error(f"Erro ao processar dados ou classificar: {e}")
 
-if st.session_state.history_location:
+history_location = localS.getItem("history_location") or []
+if history_location:
     st.markdown("---")
     st.markdown("### Histórico de Medições por Localização")
-    reversed_history_location = st.session_state.history_location[::-1]
+    reversed_history_location = history_location[::-1]
     df_history = pd.DataFrame(reversed_history_location)
     st.dataframe(df_history)
