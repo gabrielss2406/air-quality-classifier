@@ -7,10 +7,12 @@ import os
 
 st.set_page_config(page_title="Análise Detalhada", page_icon="📊")
 
-st.title("📊 Análise Detalhada dos dados")
+st.title("📊 Análise Detalhada")
 
-st.info("O objetivo central desse trabalho é a detecção e análise de ambientes poluídos. O conteúdo está estruturado em seções que incluem contextualização do problema, " \
-"preparação dos dados, exploração inicial, modelagem e avaliação. A seguir, apresenta-se uma análise detalhada dos dados utilizados.")
+st.markdown("""
+Esta página apresenta uma análise exploratória detalhada dos dados de poluição do ar no Brasil, 
+incluindo distribuições de variáveis e correlações entre poluentes.
+""")
 
 st.write(
     """
@@ -67,9 +69,10 @@ with col6:
 
 st.info(" As colunas AQI possuem os dados mais padronizados e normalizado, mas observando os gráficos, surge a reflexão, qual das duas métricas (AQI ou medida) é mais relevante para a análise de poluição?")
 
-st.write(
-    """ Então plotamos gráficos para as análises dos valores e definir qual o melhor para o estudo:"""
-)
+st.markdown("""
+Os gráficos abaixo mostram a distribuição dos principais poluentes atmosféricos medidos no Brasil.
+Analisamos tanto os valores brutos medidos pelos sensores quanto os índices AQI (Air Quality Index) padronizados.
+""")
 
 st.image("images/distribuicao_vars.png", caption="Distribuição das variáveis")
 
@@ -109,43 +112,60 @@ with col11:
 with col12:
     st.image("images/boxplot_so2_medida.png", width=550)
 
-st.info("Pudemos observar:")
+st.subheader("🔍 Análise das Distribuições")
 
-st.write(
-    """- **O3_medida / O3_aqi**
-    + Distribuição levemente assimétrica.
-    + Grande concentração entre 20–60.
-    + Cauda curta de valores mais altos.
-    +  *Interpretação*: O ozônio costuma ter picos ocasionais, mas de forma geral é relativamente estável. Pode ser um indicativo moderado de poluição.
+with st.expander("**O3 (Ozônio) - medida / aqi**"):
+    st.markdown("""
+    - Distribuição levemente assimétrica
+    - Grande concentração entre 20–60
+    - Cauda curta de valores mais altos
+    - **Interpretação**: O ozônio costuma ter picos ocasionais, mas de forma geral é relativamente estável. 
+      Pode ser um indicativo moderado de poluição.
+    """)
 
-- **CO_medida / CO_aqi**
-    + Extremamente assimétricos.
-    + Muitos valores próximos de zero.
-    + Cauda longa atingindo valores bem altos.
-    + *Interpretação*: CO é claramente uma variável com muitos valores muito baixos e alguns picos isolados (talvez áreas industriais, tráfego intenso, ou falhas pontuais de medição).
+with st.expander("**CO (Monóxido de Carbono) - medida / aqi**"):
+    st.markdown("""
+    - Extremamente assimétricos
+    - Muitos valores próximos de zero
+    - Cauda longa atingindo valores bem altos
+    - **Interpretação**: CO é claramente uma variável com muitos valores muito baixos e alguns picos isolados 
+      (talvez áreas industriais, tráfego intenso, ou falhas pontuais de medição).
+    """)
 
-- **NO2_medida / NO2_aqi**
-    + Muito concentrado perto de zero.
-    + Poucos valores mais altos (>60).
-    + *Interpretação*: NO₂ está fortemente associado a poluição por tráfego e combustão. Mesmo com baixa ocorrência de picos, os valores altos podem discriminar bem locais poluídos.
+with st.expander("**NO2 (Dióxido de Nitrogênio) - medida / aqi**"):
+    st.markdown("""
+    - Muito concentrado perto de zero
+    - Poucos valores mais altos (>60)
+    - **Interpretação**: NO₂ está fortemente associado a poluição por tráfego e combustão. 
+      Mesmo com baixa ocorrência de picos, os valores altos podem discriminar bem locais poluídos.
+    """)
 
-- **PM10_medida / PM10_aqi**
-    + Assimetria muito forte.
-    + Grande concentração perto de zero.
-    + Cauda longa.
-    + *Interpretação*: PM10 é uma das métricas mais importantes para classificar poluição e aqui ela parece ter vários valores extremos. É uma variável com comportamento ideal para ser usada como feature principal no modelo.
+with st.expander("**PM10 (Material Particulado ≤10μm) - medida / aqi**"):
+    st.markdown("""
+    - Assimetria muito forte
+    - Grande concentração perto de zero
+    - Cauda longa
+    - **Interpretação**: PM10 é uma das métricas mais importantes para classificar poluição e aqui ela 
+      parece ter vários valores extremos. É uma variável com comportamento ideal para ser usada como 
+      feature principal no modelo.
+    """)
 
-- **PM2_5_medida / PM2_5_aqi**
-    + Distribuição semelhante ao PM10, mas menos extrema.
-    + Valores médios variam entre 10–50 com cauda até >100.
-    + *Interpretação*: PM2.5 é extremamente correlacionado com riscos para saúde e é um excelente indicador de poluição. Precisará de transformação por causa da cauda longa.
+with st.expander("**PM2.5 (Material Particulado ≤2.5μm) - medida / aqi**"):
+    st.markdown("""
+    - Distribuição semelhante ao PM10, mas menos extrema
+    - Valores médios variam entre 10–50 com cauda até >100
+    - **Interpretação**: PM2.5 é extremamente correlacionado com riscos para saúde e é um excelente 
+      indicador de poluição. Precisará de transformação por causa da cauda longa.
+    """)
 
-- **SO2_medida / SO2_aqi**
-    + Muito concentrado abaixo de 5.
-    + Pouquíssimos valores altos.
-    + *Interpretação*: SO₂ costuma ser baixo em muitos lugares e só sobe em regiões industriais ou queima de carvão. Pode ajudar a identificar locais específicos fortemente poluídos, mas não será tão útil para generalização.
-"""
-)
+with st.expander("**SO2 (Dióxido de Enxofre) - medida / aqi**"):
+    st.markdown("""
+    - Muito concentrado abaixo de 5
+    - Pouquíssimos valores altos
+    - **Interpretação**: SO₂ costuma ser baixo em muitos lugares e só sobe em regiões industriais ou 
+      queima de carvão. Pode ajudar a identificar locais específicos fortemente poluídos, mas não será 
+      tão útil para generalização.
+    """)
 
 st.info("Plotando um gráfico com a relação das variáveis e a poluição:")
 
