@@ -21,7 +21,9 @@ st.write(
     """
 )
 
-st.info("Primeiro é feito o carregamento dos dados, foram importados dados em 22 colunas: city, timestamp, temperature, wind, humidity, dew_point, pressure	uv_index, O3_aqi, CO_medida, NO2_aqi, NO2_medida, PM10_aqi, PM10_medida, PM2_5_aqi, PM2_5_medida, SO2_aqi, SO2_medida e polluted")
+st.info(
+    "Primeiro é feito o carregamento dos dados, foram importados dados em 22 colunas: city, timestamp, temperature, wind, humidity, dew_point, pressure	uv_index, O3_aqi, CO_medida, NO2_aqi, NO2_medida, PM10_aqi, PM10_medida, PM2_5_aqi, PM2_5_medida, SO2_aqi, SO2_medida e polluted"
+)
 
 st.write(
     """
@@ -41,9 +43,13 @@ st.write(
 - **AQI**: Dado padronizado dentro de intervalos, que mostram o nivel de poluição que isso pode trazer, como dois elementos possuem medidas diferentes, são colocados nessa forma para trazer uma melhor comparação e relação entre eles."""
 )
 
-st.info("Não foi necessário realizar tratamento de dados faltantes, pois o dataset apresentava dados completos.")
+st.info(
+    "Não foi necessário realizar tratamento de dados faltantes, pois o dataset apresentava dados completos."
+)
 
-st.info("Então realizamos a EDA para entender e visualizar os dados antes de treinar modelos.")
+st.info(
+    "Então realizamos a EDA para entender e visualizar os dados antes de treinar modelos."
+)
 
 st.write(
     """ Foram feitos gráficos para comparar o valor medido e AQI de cada poluente, obtendo os seguintes gráficos:"""
@@ -67,7 +73,9 @@ with col5:
 with col6:
     st.image("images/so2_aqi_vs_medido.png", caption="Distribuição do SO2", width=550)
 
-st.info(" As colunas AQI possuem os dados mais padronizados e normalizado, mas observando os gráficos, surge a reflexão, qual das duas métricas (AQI ou medida) é mais relevante para a análise de poluição?")
+st.info(
+    " As colunas AQI possuem os dados mais padronizados e normalizado, mas observando os gráficos, surge a reflexão, qual das duas métricas (AQI ou medida) é mais relevante para a análise de poluição?"
+)
 
 st.markdown("""
 Os gráficos abaixo mostram a distribuição dos principais poluentes atmosféricos medidos no Brasil.
@@ -80,11 +88,11 @@ col1, col2 = st.columns(2)
 with col1:
     st.image("images/boxplot_o3_aqi.png", width=550)
 with col2:
-    st.image("images/boxplot_o3.png",  width=550)
+    st.image("images/boxplot_o3.png", width=550)
 
 col3, col4 = st.columns(2)
 with col3:
-    st.image("images/boxplot_co_aqi.png",  width=550)
+    st.image("images/boxplot_co_aqi.png", width=550)
 with col4:
     st.image("images/boxplot_co_medida.png", width=550)
 
@@ -102,9 +110,9 @@ with col8:
 
 col9, col10 = st.columns(2)
 with col9:
-    st.image("images/boxplot_pm2_aqi.png",  width=550)
+    st.image("images/boxplot_pm2_aqi.png", width=550)
 with col10:
-    st.image("images/boxplot_pm2_medida.png",  width=550)
+    st.image("images/boxplot_pm2_medida.png", width=550)
 
 col11, col12 = st.columns(2)
 with col11:
@@ -200,3 +208,21 @@ Isso sugere que ambientes com alta concentração de um poluente geralmente têm
 
 - *Variáveis climáticas possuem pouca influência*: Temperatura, vento, umidade e ponto de orvalho apresentam correlações baixas com os níveis de poluição. Isso mostra que, no dataset, as condições meteorológicas não são determinantes diretas na classificação do ambiente como poluído ou não."""
 )
+
+st.success("""
+**Principais descobertas:**
+
+1. **PM10 e PM2.5** são os indicadores mais fortes de poluição, com distribuições que mostram 
+   claramente ambientes extremamente poluídos.
+
+2. **NO2 e CO** também são importantes, especialmente em áreas urbanas com tráfego intenso.
+
+3. Os **índices AQI** são mais adequados para modelagem por serem padronizados e permitirem 
+   melhor comparação entre diferentes poluentes.
+
+4. **Fatores climáticos** têm baixa influência na classificação de poluição, sugerindo que 
+   os níveis de poluentes são determinados principalmente por atividades humanas e industriais.
+
+5. A **multicolinearidade** entre medidas e AQI exige escolha estratégica de features para 
+   evitar redundância no modelo.
+""")
