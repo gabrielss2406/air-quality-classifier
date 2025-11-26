@@ -1,6 +1,6 @@
-# 🌿 Conceitos de Poluição
+#  Conceitos de Poluição
 
-## 🧪 1. Concentrações Reais de Poluentes (`*_medida`)
+##  1. Concentrações Reais de Poluentes (`*_medida`)
 
 As colunas que terminam com **`_medida`** representam a **concentração real** de um poluente na atmosfera, medida por sensores ou estações de monitoramento.
 
@@ -14,7 +14,7 @@ Esses valores são geralmente medidos em µg/m³ ou ppm, dependendo do poluente.
 
 ---
 
-## 📊 2. AQI – Índice de Qualidade do Ar (`*_aqi`)
+##  2. AQI – Índice de Qualidade do Ar (`*_aqi`)
 
 As colunas que terminam com **`*_aqi`** representam o **Air Quality Index (AQI)**, um índice padronizado que converte concentrações reais em uma escala comum de risco.
 
@@ -29,7 +29,7 @@ Funções do AQI:
 
 ---
 
-## 🏭 3. Relação entre Concentração Real e AQI
+##  3. Relação entre Concentração Real e AQI
 
 O código compara graficamente:
 - `*_medida` → concentração real  
@@ -42,7 +42,7 @@ Isso permite observar:
 
 ---
 
-## 🔥 4. Correlação entre Poluentes e a Poluição Geral
+##  4. Correlação entre Poluentes e a Poluição Geral
 
 Medido o quanto cada poluente contribui para a variável final `polluted` (indicador de poluição).
 
@@ -76,7 +76,7 @@ Os dados incluem diferentes poluentes atmosféricos, cada um com característica
 
 ---
 
-## 🧭 6. Variável-Alvo: `polluted`
+##  6. Variável-Alvo: `polluted`
 
 O conjunto possui a coluna **`polluted`**, que indica se a qualidade do ar está:
 
@@ -87,7 +87,7 @@ Ela ajuda a identificar quais poluentes são determinantes no estado final de po
 
 ---
 
-## 📈 7. Conceito de Correlação Aplicado à Poluição
+##  7. Conceito de Correlação Aplicado à Poluição
 
 - Como os poluentes se relacionam entre si  
 - Quais deles têm maior influência sobre a poluição  
@@ -95,7 +95,7 @@ Ela ajuda a identificar quais poluentes são determinantes no estado final de po
 
 ---
 
-## 🧭 Resumo
+##  Resumo
 
 - Medir poluentes  
 - Padronizar impacto via AQI  
